@@ -253,19 +253,140 @@ class BattleManager {
   // Evaluate solution against test cases
   async evaluateSolution(code, language, testCases) {
     try {
+      // Use Judge0 API for real test execution
+      const axios = require('axios');
+
+      // Judge0 configuration based on environment
+      const JUDGE0_API_URL = process.env.NODE_ENV === 'production'
+        ? process.env.JUDGE0_API_URL || 'https://judge0-ce.p.rapidapi.com'
+        : 'https://judge0-ce.p.rapidapi.com';
+
+      const JUDGE0_API_KEY = process.env.JUDGE0_API_KEY || '99eaacbb6bmsh3d560d7360b3791p1285c4jsn415c27360a6d';
+
+      if (!JUDGE0_API_KEY) {
+        throw new Error('Judge0 API key not configured');
+      }
+
+      // Language ID mapping
+      const LANGUAGE_IDS = {
+        javascript: 63,
+        python: 71,
+        cpp: 54,
+        java: 62,
+        c: 50,
+        go: 60,
+        kotlin: 78,
+        rust: 73,
+        typescript: 74,
+        swift: 83
+      };
+
+      const languageId = LANGUAGE_IDS[language];
+      if (!languageId) {
+        throw new Error(`Unsupported language: ${language}`);
+      }
+
       let passedTests = 0;
       const results = [];
 
       for (const testCase of testCases) {
         try {
-          const result = await this.runTestCase(code, language, testCase);
-          results.push(result);
-          if (result.passed) passedTests++;
-        } catch (error) {
+          // Prepare submission for Judge0
+          const submission = {
+            language_id: languageId,
+            source_code: code,
+            stdin: testCase.input || '',
+            expected_output: testCase.expectedOutput || '',
+            cpu_time_limit: 2,
+            cpu_extra_time: 0.5,
+            wall_time_limit: 3, // Railway-safe timeout
+            memory_limit: 128000,
+            stack_limit: 64000,
+            max_file_size: 1024
+          };
+
+          // Submit to Judge0
+          const submitResponse = await axios.post(`${JUDGE0_API_URL}/submissions`, submission, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-RapidAPI-Key': JUDGE0_API_KEY,
+              'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            },
+            timeout: 3000 // 3 second timeout
+          });
+
+          const token = submitResponse.data.token;
+
+          // Wait for result with timeout
+          let result;
+          let attempts = 0;
+          const maxAttempts = 5; // Reduced for Railway
+
+          while (attempts < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, 500)); // Wait 0.5 seconds
+
+            try {
+              const resultResponse = await axios.get(`${JUDGE0_API_URL}/submissions/${token}`, {
+                headers: {
+                  'X-RapidAPI-Key': JUDGE0_API_KEY,
+                  'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+                },
+                timeout: 2000
+              });
+
+              result = resultResponse.data;
+              if (result.status.id > 2) { // Status > 2 means execution finished
+                break;
+              }
+            } catch (error) {
+              if (error.code === 'ECONNABORTED') {
+                throw new Error('Judge0 request timeout');
+              }
+              throw error;
+            }
+
+            attempts++;
+          }
+
+          if (!result || result.status.id <= 2) {
+            throw new Error('Test execution timeout');
+          }
+
+          // Check if test passed - improved output comparison
+          const actualOutput = result.stdout || '';
+          const expectedOutput = testCase.expectedOutput || '';
+
+          // Normalize outputs for comparison (handle whitespace, case sensitivity)
+          const normalizedActual = actualOutput.trim().replace(/\s+/g, ' ');
+          const normalizedExpected = expectedOutput.trim().replace(/\s+/g, ' ');
+
+          const isPassed = result.status.id === 3 && // Accepted
+            (normalizedActual === normalizedExpected ||
+             (normalizedActual === '' && normalizedExpected === ''));
+
           results.push({
+            input: testCase.input,
+            expectedOutput: expectedOutput,
+            actualOutput: actualOutput,
+            passed: isPassed,
+            time: result.time || 0,
+            memory: result.memory || 0,
+            error: result.stderr || result.compile_output || null,
+            status: result.status.description || 'Unknown'
+          });
+
+          if (isPassed) passedTests++;
+
+        } catch (error) {
+          console.error('Test case execution error:', error);
+          results.push({
+            input: testCase.input,
+            expectedOutput: testCase.expectedOutput,
+            actualOutput: '',
             passed: false,
-            error: error.message,
-            executionTime: 0
+            time: 0,
+            memory: 0,
+            error: error.message || 'Execution failed'
           });
         }
       }
@@ -276,11 +397,25 @@ class BattleManager {
         score,
         passedTests,
         totalTests: testCases.length,
-        results
+        results,
+        compilationError: null
       };
 
     } catch (error) {
       console.error('Error evaluating solution:', error);
+
+      // Check if Judge0 is unavailable
+      if (error.message.includes('Judge0') || error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        return {
+          score: 0,
+          passedTests: 0,
+          totalTests: testCases.length,
+          results: [],
+          error: 'Compiler service unavailable. Please try again.',
+          judge0Unavailable: true
+        };
+      }
+
       return {
         score: 0,
         passedTests: 0,
@@ -291,36 +426,7 @@ class BattleManager {
     }
   }
 
-  // Run a single test case (simplified version - in production, use Judge0 or similar)
-  async runTestCase(code, language, testCase) {
-    // This is a simplified evaluation - in production, you'd use Judge0 API or similar
-    // For now, we'll do basic validation
-    try {
-      // Simulate execution time
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
 
-      // For demo purposes, randomly pass/fail tests
-      // In production, you'd actually execute the code
-      const passed = Math.random() > 0.3; // 70% pass rate for demo
-
-      return {
-        passed,
-        executionTime: Math.random() * 1000,
-        memoryUsed: Math.random() * 1000000,
-        output: passed ? JSON.stringify(testCase.expectedOutput) : 'Wrong answer',
-        error: passed ? null : 'Test case failed'
-      };
-
-    } catch (error) {
-      return {
-        passed: false,
-        executionTime: 0,
-        memoryUsed: 0,
-        output: null,
-        error: error.message
-      };
-    }
-  }
 
   // End battle and calculate results
   async endBattle(battle) {

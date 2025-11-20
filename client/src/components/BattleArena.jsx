@@ -4,6 +4,9 @@ import io from 'socket.io-client';
 import Editor from '@monaco-editor/react';
 import axios from '../utils/axios';
 import BackButton from './BackButton';
+import antiCheatSystem from '../../../antiCheat/antiCheat.js';
+import antiCheatLogger from '../../../antiCheat/logger.js';
+import KeyboardShortcuts from '../../../antiCheat/keyboardShortcuts.js';
 
 const BattleArena = () => {
   const { user } = useAuth();
@@ -28,6 +31,8 @@ const BattleArena = () => {
   const [practiceTopic, setPracticeTopic] = useState(null);
   const [loadingPractice, setLoadingPractice] = useState(false);
   const [solvedQuestions, setSolvedQuestions] = useState([]);
+  const [antiCheatEnabled, setAntiCheatEnabled] = useState(false);
+  const [devMode, setDevMode] = useState(localStorage.getItem('devMode') === 'true');
 
   const timerRef = useRef(null);
 
@@ -35,6 +40,17 @@ const BattleArena = () => {
   useEffect(() => {
     const newSocket = io(import.meta.env.VITE_API_URL);
     setSocket(newSocket);
+
+    // Initialize anti-cheat system
+    if (antiCheatSystem && antiCheatSystem.initialize) {
+      antiCheatSystem.initialize(newSocket);
+    }
+    if (antiCheatLogger && antiCheatLogger.initialize) {
+      antiCheatLogger.initialize(newSocket);
+    }
+    if (KeyboardShortcuts && KeyboardShortcuts.initialize) {
+      KeyboardShortcuts.initialize(antiCheatSystem, antiCheatLogger);
+    }
 
     newSocket.on('connect', () => {
       setIsConnected(true);
@@ -99,8 +115,15 @@ const BattleArena = () => {
       clearInterval(timerRef.current);
     });
 
+    // Anti-cheat events (for debugging - not shown to users)
+    newSocket.on('anti-cheat-log', (data) => {
+      console.log('Anti-Cheat Log:', data);
+    });
+
     return () => {
       newSocket.close();
+      // Cleanup anti-cheat system
+      KeyboardShortcuts.destroy();
     };
   }, []);
 
