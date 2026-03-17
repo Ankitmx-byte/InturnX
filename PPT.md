@@ -13,132 +13,143 @@ footer: "AI-Powered Internship Preparation Platform"
 
 ---
 
-## 🛑 Idea Title & Problem Statement
+## Idea Title & Problem Statement
 
-**Title:** InturnX - Bridging the Gap Between Academic Theory and Real-World Execution.
+**Title:** InturnX - Bridging the gap between academic learning and real-world execution
 
 **The Problem:**
-Traditional placement preparation relies heavily on static coding platforms and theoretical knowledge. It often misses key aspects necessary for real-world success:
-- 😰 **Lack of Real Interview Pressure:** Students struggle with soft skills and communication under technical scrutiny.
-- 🗣️ **Limited Practical Communication Skills:** Practicing alone doesn't simulate conversing with a technical interviewer or HR manager.
-- ⚔️ **Absence of a Competitive Environment:** Standard platforms don't replicate the time-sensitive, competitive nature of actual tech assessments.
+Most placement preparation today is either theory-heavy or limited to basic coding practice. It misses what actually matters in real interviews:
 
-**The Solution:** InturnX provides a realistic, all-in-one ecosystem that actively simulates the pressure and environment of professional software engineering assessments.
+- Lack of real interview pressure  
+- Weak communication practice with interviewers  
+- No real competition or time pressure  
 
----
-
-## 💻 Technical Approach
-
-InturnX combines real-time synchronization, isolated code compilation, and generative AI into a unified ecosystem.
-
-**Tech Stack Arsenal:**
-- **Frontend Ecosystem:** React 19, Vite, Tailwind CSS, Monaco Editor (for a native VS Code-like feel).
-- **Backend Infrastructure:** Node.js, Express, MongoDB (Structured Data & Analytics).
-- **AI Microservice:** Python FastAPI (for ML model inference, Recommendations, Resume ATS Analysis).
-- **Real-Time Layer:** Socket.io (Low-latency WebSockets for 1v1 battles).
-- **Code Execution Engine:** Judge0 API (Secure, multi-language sandboxed compilation).
-- **AI Tooling:** STT/TTS via ElevenLabs/Web APIs, Ollama (for offline, local infrastructure fallback).
+**The Solution:**  
+InturnX creates a realistic environment where students can experience actual interview scenarios, compete with others, and improve both technical and communication skills.
 
 ---
 
-## 🏗️ Architecture / Flow Diagram
+## Technical Approach
 
-**Complete System Workflow:**
+InturnX combines real-time systems, AI services, and code execution into one platform.
+
+**Tech Stack:**
+- **Frontend:** React 19, Vite, Tailwind CSS, Monaco Editor  
+- **Backend:** Node.js, Express, MongoDB  
+- **AI Service:** FastAPI (Python)  
+- **Real-time:** Socket.io  
+- **Code Execution:** Judge0 API  
+- **AI Tools:** STT/TTS (ElevenLabs/Web APIs), Ollama (offline fallback)  
+
+---
+
+## Architecture / Flow
+
+**System Workflow:**
 
 ```text
-               [ User Login ]
-                     ↓
-             [ Choose Module ]
-                     ↓
-[ Interview ]   [ Coding Battle ]   [ Resume Builder ]
-      ↓                 ↓                   ↓
-AI Interaction   Real-time Match     Build & ATS Analyze
-      ↓                 ↓                   ↓
-         Performance Evaluation (AI / System)
-                        ↓
-             XP and Analytics Update
-                        ↓
-            [ Dashboard Insights ]
-```
+User Login
+   ↓
+Choose Module
+   ↓
+Interview | Coding Battle | Resume Builder
+   ↓
+AI Interaction | Matchmaking | Resume Analysis
+   ↓
+Evaluation (AI/System)
+   ↓
+XP + Analytics Update
+   ↓
+Dashboard
+Technical Component Architecture
+Frontend (React)
+      ↓
+Backend (Node.js + Express)
+      ↓
+---------------------------------
+AI Service | Judge0 | MongoDB
+(FastAPI)  | API     | Database
+---------------------------------
+      ↓
+Socket.io (Real-time layer)
+AI Interviews
 
----
+Flow:
+Select interview → AI asks questions → user responds → follow-ups → final report
 
-## 🏗️ Technical Component Architecture
+Different roles: Technical, HR, DSA, System Design
 
-```text
-       Frontend (React 19 SPA)
-                 ↓
-    Backend (Node.js + Express)
-                 ↓
------------------------------------------
-| AI Service  | Judge0 API | MongoDB     |
-| (FastAPI)   | Execution  | Database    |
------------------------------------------
-                 ↓
-   Real-time Layer (Socket.io Rooms)
-```
+Voice-based interaction (STT + TTS)
 
----
+Live coding support
 
-## 🎙️ Feature Deep Dive: AI Interviews
+Auto-generated report with feedback
 
-**Workflow:** Select Interview Type -> AI Starts Conversation -> User Responds (Voice/Text) -> Follow-up Questions -> Evaluation & Report
+1v1 Coding Battles
 
-- **Role-based AI Personas:** 
-  - Technical, HR, DSA, and System Design specialists.
-- **Natural Voice Interaction:** 
-  - Real-time Speech-to-Text (STT) and Text-to-Speech (TTS) for a fluid conversational experience.
-- **Interactive Technical Rounds:** 
-  - Live coding support directly within the browser during the interview.
-- **Actionable Feedback:** 
-  - Auto-generated PDF reports with detailed scoring and constructive feedback.
+Flow:
+Match → problem → live coding → execution → result → XP update
 
----
+Real-time matchmaking
 
-## ⚔️ Feature Deep Dive: 1v1 Coding Battles
+Live opponent code view (ghost typing)
 
-**Workflow:** Match Found -> Problem Assigned -> Live Coding Sync -> Judge0 Execution -> Winner Decided -> XP Updated
+Anti-cheat system (tab switch + shortcut tracking)
 
-- **Real-Time Matchmaking:** Instantly pairs users of similar skill levels.
-- **Live Opponent Sync:** Features "Ghost Typing" to view your opponent's progress live, adding competitive pressure.
-- **Anti-Cheat Ecosystem:** 
-  - Overrides critical browser shortcuts (Ctrl+C, Ctrl+V).
-  - Monitors page visibility to ensure fairness.
-- **Robust Execution:** Evaluates code against hidden edge cases via Judge0.
+Code evaluation using Judge0
 
----
+Feasibility and Viability
 
-## ✅ Feasibility and Viability
+Technical:
 
-**Technical Feasibility:**
-- Built entirely on proven, production-ready frameworks (MERN + FastAPI).
-- Secure, sandboxed code execution using Judge0 prevents malicious code from harming the main servers.
-- **Offline / Edge Case Resilience:** Incorporates fallback to local Ollama models, ensuring the platform remains fully functional even if external LLM APIs (like OpenAI) hit rate limits or downtime.
+Built on stable technologies (MERN + FastAPI)
 
-**Economic Viability:**
-- Employs an efficient serverless edge architecture (Vercel) allowing the platform to scale dynamically.
-- Utilizes open-source integrations to heavily reduce API overhead costs.
-- Gamified mechanics (XP, Streaks) ensure high user retention without expensive marketing.
+Secure code execution via Judge0
 
----
+Works even during API downtime using Ollama fallback
 
-## 🌟 Impact and Benefits
+Economic:
 
-**For the Users (Students & Job Seekers):**
-- **Realistic Preparation:** Accurately mimics the stress and format of actual tech company interviews.
-- **Continuous Motivation:** XP tracking, consecutive day streaks, and battle win/loss ratios turn learning into an engaging game.
-- **Profile Building:** Structured ATS-analyzer ensures resumes pass automated corporate filters.
-- **Comprehensive Growth:** Holistic development of both hard coding skills and soft communication skills.
+Serverless deployment (Vercel) for scalability
 
-**For the Educational Ecosystem:**
-- Democratizes access to high-quality, mock-interview practice that is traditionally expensive or requires human mentorship.
+Uses open-source tools to reduce cost
 
----
+Gamification improves user retention naturally
 
-## 📚 Research and Scientific Basis
+Impact and Benefits
 
-**How the Features Work and Professional Context:**
-- **Conversational AI Cognitive Load:** Research shows that voice-based technical interviews simulate cognitive stress accurately. InturnX utilizes low-latency TTS/STT to force spontaneous problem-solving, preventing rehearsed, rote learning.
-- **Competitive Programming Efficacy:** Real-time 1v1 peer environments (via Socket.io) leverage "social facilitation theory," where visibility of a peer's progress (Ghost Typing) significantly increases focus and compilation speed.
-- **ATS Algorithms:** InturnX's resume scanner uses NLP term-frequency analysis to mirror real Applicant Tracking Systems (Workday, Greenhouse), providing students with empirical data on keyword matching rather than subjective guesswork.
-- **Sandboxed Compilation (Judge0):** Utilizes standard Linux cgroups and namespaces for 100% secure RCE (Remote Code Execution) to assess Big-O time and space complexity against optimized test cases.
+For Students:
+
+Real interview-like experience
+
+Better consistency through XP and streaks
+
+Resume improvement with ATS insights
+
+Growth in both coding and communication
+
+For Education:
+
+Makes quality interview practice accessible without expensive coaching
+
+Research and Basis
+
+Voice-based interviews simulate real pressure and improve thinking speed
+
+Competitive environments improve focus and performance
+
+Resume analysis uses keyword matching similar to real ATS systems
+
+Judge0 ensures safe and reliable code execution
+
+Final Thought
+
+Preparation without pressure is incomplete.
+
+InturnX brings:
+
+real scenarios
+
+real competition
+
+real improvement
