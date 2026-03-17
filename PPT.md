@@ -13,143 +13,198 @@ footer: "AI-Powered Internship Preparation Platform"
 
 ---
 
-## Idea Title & Problem Statement
+## Problem Statement
 
-**Title:** InturnX - Bridging the gap between academic learning and real-world execution
+**Challenge:** The Gap in Modern Placement Preparation
 
-**The Problem:**
-Most placement preparation today is either theory-heavy or limited to basic coding practice. It misses what actually matters in real interviews:
+Most placement preparation programs today are either:
+- Theory-heavy with limited practical application
+- Basic coding practice without interview simulation
 
-- Lack of real interview pressure  
-- Weak communication practice with interviewers  
-- No real competition or time pressure  
-
-**The Solution:**  
-InturnX creates a realistic environment where students can experience actual interview scenarios, compete with others, and improve both technical and communication skills.
-
----
-
-## Technical Approach
-
-InturnX combines real-time systems, AI services, and code execution into one platform.
-
-**Tech Stack:**
-- **Frontend:** React 19, Vite, Tailwind CSS, Monaco Editor  
-- **Backend:** Node.js, Express, MongoDB  
-- **AI Service:** FastAPI (Python)  
-- **Real-time:** Socket.io  
-- **Code Execution:** Judge0 API  
-- **AI Tools:** STT/TTS (ElevenLabs/Web APIs), Ollama (offline fallback)  
+**Current Gaps:**
+- Lack of realistic interview pressure and scenarios
+- Limited communication and soft skills practice
+- No competitive environment or time constraints
+- Missing feedback on technical AND interpersonal skills
 
 ---
 
-## Architecture / Flow
+## Our Solution: InturnX
 
-**System Workflow:**
+A comprehensive, AI-powered platform that bridges academic learning and real-world execution.
 
-```text
-User Login
-   ↓
-Choose Module
-   ↓
-Interview | Coding Battle | Resume Builder
-   ↓
-AI Interaction | Matchmaking | Resume Analysis
-   ↓
-Evaluation (AI/System)
-   ↓
-XP + Analytics Update
-   ↓
-Dashboard
-Technical Component Architecture
-Frontend (React)
-      ↓
-Backend (Node.js + Express)
-      ↓
----------------------------------
-AI Service | Judge0 | MongoDB
-(FastAPI)  | API     | Database
----------------------------------
-      ↓
-Socket.io (Real-time layer)
-AI Interviews
+**Key Features:**
+- 🎯 **AI-Powered Mock Interviews** - Real-time feedback on technical and communication skills
+- ⚔️ **1v1 Coding Battles** - Live competitive coding with anti-cheat systems
+- 📄 **Smart Resume Builder** - ATS-optimized resume analysis and suggestions
+- 📊 **Gamified Progress Tracking** - XP system, streaks, and performance analytics
 
-Flow:
-Select interview → AI asks questions → user responds → follow-ups → final report
+---
 
-Different roles: Technical, HR, DSA, System Design
+## Technical Stack
 
-Voice-based interaction (STT + TTS)
+**Frontend Layer**
+- React 19 with Vite
+- Tailwind CSS for responsive UI
+- Monaco Editor for code editing
 
-Live coding support
+**Backend Layer**
+- Node.js + Express server
+- MongoDB for persistent data storage
+- Socket.io for real-time communication
 
-Auto-generated report with feedback
+**AI & Execution Layer**
+- FastAPI (Python) for AI services
+- Judge0 API for secure code execution
+- ElevenLabs/Web APIs for STT/TTS
+- Ollama as offline AI fallback
 
-1v1 Coding Battles
+---
 
-Flow:
-Match → problem → live coding → execution → result → XP update
+## System Architecture
 
-Real-time matchmaking
+```
+┌─────────────────────────────────────────────┐
+│          Frontend (React 19 + Vite)         │
+└──────────────────┬──────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────┐
+│   Backend (Node.js + Express + Socket.io)   │
+└──┬──────────────┬──────────────┬────────────┘
+   │              │              │
+   ▼              ▼              ▼
+┌────────┐  ┌──────────┐  ┌────────────┐
+│ MongoDB│  │ Judge0   │  │  FastAPI   │
+│Database│  │  API     │  │  (AI)      │
+└────────┘  └──────────┘  └────────────┘
+```
 
-Live opponent code view (ghost typing)
+---
 
-Anti-cheat system (tab switch + shortcut tracking)
+## Feature 1: AI-Powered Interviews
 
-Code evaluation using Judge0
+**How It Works:**
+1. Select interview type (Technical, HR, DSA, System Design)
+2. AI conducts real-time voice interview using STT/TTS
+3. Follow-up questions based on user responses
+4. Auto-generated evaluation report with detailed feedback
 
-Feasibility and Viability
+**Benefits:**
+- Simulates actual interview pressure
+- Improves decision-making speed
+- Provides actionable feedback
+- Multiple interview profiles for diverse preparation
 
-Technical:
+---
 
-Built on stable technologies (MERN + FastAPI)
+## Feature 2: 1v1 Coding Battles
 
-Secure code execution via Judge0
+**Live Competition Workflow:**
+1. Real-time matchmaking with skill-based pairing
+2. Synchronized problem display for both competitors
+3. Live code view (ghost typing) for transparency
+4. Code execution via Judge0 for fair evaluation
 
-Works even during API downtime using Ollama fallback
+**Anti-Cheat Measures:**
+- Tab-switch detection
+- Keyboard shortcut tracking
+- Real-time code similarity analysis
 
-Economic:
+**Rewards:**
+- XP points for wins and performance
+- Leaderboard rankings
+- Streak bonuses for consistency
 
-Serverless deployment (Vercel) for scalability
+---
 
-Uses open-source tools to reduce cost
+## Feature 3: Smart Resume Builder
 
-Gamification improves user retention naturally
+**Capabilities:**
+- ATS (Applicant Tracking System) keyword optimization
+- Resume parsing and structural analysis
+- Keyword matching against job descriptions
+- Real-time improvement suggestions
 
-Impact and Benefits
+**Value Proposition:**
+- Increases resume pass-through rate
+- Aligns with industry standards
+- Data-driven optimization
 
-For Students:
+---
 
-Real interview-like experience
+## Feasibility Assessment
 
-Better consistency through XP and streaks
+**Technical Viability:**
+✅ Built on proven, stable technologies (MERN + FastAPI)
+✅ Judge0 ensures safe, isolated code execution
+✅ Ollama provides offline fallback for AI services
+✅ Scalable architecture with minimal infrastructure costs
 
-Resume improvement with ATS insights
+**Economic Viability:**
+✅ Serverless deployment on Vercel reduces operational costs
+✅ Open-source tools minimize licensing expenses
+✅ Natural user retention through gamification
+✅ Multiple revenue streams (freemium model, premium features)
 
-Growth in both coding and communication
+---
 
-For Education:
+## Impact & Benefits
 
-Makes quality interview practice accessible without expensive coaching
+**For Students:**
+- Realistic interview-like experience without real stakes
+- Measurable progress through XP and achievements
+- Improved resume quality with actionable insights
+- Holistic skill development (technical + communication)
 
-Research and Basis
+**For Educational Institutions:**
+- Democratizes quality interview preparation
+- Reduces reliance on expensive coaching services
+- Data-driven insights into student performance
+- Scalable solution for large cohorts
 
-Voice-based interviews simulate real pressure and improve thinking speed
+---
 
-Competitive environments improve focus and performance
+## Research Foundation
 
-Resume analysis uses keyword matching similar to real ATS systems
+**Evidence-Based Approach:**
 
-Judge0 ensures safe and reliable code execution
+1. **Voice-Based Interviews**
+   - Simulates real interview pressure
+   - Improves thinking speed and clarity
 
-Final Thought
+2. **Competitive Environments**
+   - Enhances focus and performance
+   - Gamification increases engagement
 
-Preparation without pressure is incomplete.
+3. **Resume Optimization**
+   - Keyword matching reflects real ATS systems
+   - Data-driven approach to career readiness
 
-InturnX brings:
+4. **Code Execution**
+   - Judge0's isolation ensures security and fairness
+   - Eliminates environment-based discrepancies
 
-real scenarios
+---
 
-real competition
+## Competitive Advantage
 
-real improvement
+**What Sets InturnX Apart:**
+- 🤖 **AI-Driven Feedback** - Not just problem solving, but communication analysis
+- 🎮 **Gamification** - Makes learning engaging and sustainable
+- 🔄 **Multi-Modal Practice** - Interviews, coding, and resume building in one platform
+- 📈 **Real Analytics** - Track growth across technical and soft skills
+- 💰 **Cost-Effective** - High-quality preparation without expensive coaching
+
+---
+
+## The Vision
+
+**Preparation without pressure is incomplete.**
+
+InturnX delivers:
+
+🎯 **Real Scenarios** - Authentic interview and coding experiences
+⚔️ **Real Competition** - Motivating peer-to-peer challenges
+📊 **Real Improvement** - Measurable growth in skills and confidence
+
+*Empowering the next generation of professionals, one interview at a time.*
